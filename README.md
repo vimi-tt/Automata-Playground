@@ -1,4 +1,4 @@
-# Automata-Playground
+### Automata-Playground
 
 Este projeto é um simulador de Autômatos Finitos Determinísticos e não Determinísticos para a cadeira de Paradigmas de Linguagem de Programação (PLP) da UFCG.
 
@@ -16,3 +16,9 @@ O projeto terá duas versões em linguagens distintas: Haskell e Prolog
 | 5   | Interface de linha de comando           | Fornece uma interface de linha de comando para interagir com o simulador, permitindo a execução de comandos como leitura de arquivo JSON, teste e visualização. |
 
 ---
+
+### Alunos
+1. [Vitor Miranda]
+2. [Alisson Amarante]
+3. [Gabriel Vilar]
+4. [Fernando Gentil]
