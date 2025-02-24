@@ -21,4 +21,3 @@ O projeto terá duas versões em linguagens distintas: Haskell e Prolog
 1. [Vitor Miranda](https://github.com/VitorMI)
 2. [Alisson Amarante](https://github.com/alissonramarante)
 3. [Gabriel Vilar](https://github.com/Gakjvc)
-4. [Fernando Gentil](https://github.com/fernandogentilp)
