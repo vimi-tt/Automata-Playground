@@ -54,13 +54,9 @@ Para rodar a versão em Haskell, siga os passos abaixo:
 3. **Executar o Simulador**  
    Execute o simulador com o seguinte comando:
    ```bash
-   cabal run -- <caminho-para-arquivo-json> <sequencia-de-entrada>
+   cabal run Automato-Plauground.cabal
    ```
-   Exemplo:
-   ```bash
-   cabal run -- examples/afd.json "0101"
-   ```
-
+   
 ##### 3. Arquivo JSON de Entrada
 Certifique-se de fornecer um arquivo JSON válido para definir o autômato. Um exemplo de estrutura JSON é mostrado abaixo:
 ```json
