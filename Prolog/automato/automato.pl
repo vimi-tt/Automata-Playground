@@ -41,3 +41,44 @@ imprimir_automato(automato(Alfabeto, EstadoInicial, EstadosFinais, Transicoes)) 
 % Imprime uma transição no formato "EstadoOrigem --(Simbolo)--> EstadoDestino"
 imprimir_transicao(de(EstadoOrigem, Simbolo, EstadoDestino)) :-
     format("  ~w --(~w)--> ~w~n", [EstadoOrigem, Simbolo, EstadoDestino]). % Formata e exibe a transição
+
+% Testa uma palavra no autômato
+teste_palavra(automato(Alfabeto, EstadoInicial, EstadosFinais, Transicoes), Palavra, Resultado) :-
+    string_chars(Palavra, Simbolos), % Converte a palavra para uma lista de símbolos
+    (   forall(member(Simbolo, Simbolos), member(Simbolo, Alfabeto)) -> % Verifica se todos os símbolos estão no alfabeto
+        simular_transicoes(Transicoes, EstadoInicial, Simbolos, EstadoFinal, EstadosPercorridos), % Simula as transições
+        (   member(EstadoFinal, EstadosFinais) -> % Verifica se o estado final é um estado de aceitação
+            Aceita = true
+        ;   Aceita = false
+        )
+    ;   _EstadoFinal = "Fora do alfabeto", % Caso a palavra contenha símbolos inválidos
+        EstadosPercorridos = ["Fora do alfabeto"],
+        Aceita = false
+    ),
+    Resultado = resultado_teste{palavra: Palavra, aceita: Aceita, estados_percorridos: EstadosPercorridos}. % Cria o resultado
+
+% Simula as transições do autômato para uma dada palavra
+simular_transicoes(_, EstadoAtual, [], EstadoAtual, [EstadoAtual]). % Caso base: fim da palavra
+simular_transicoes(Transicoes, EstadoAtual, [Simbolo|Restante], EstadoFinal, [EstadoAtual|EstadosPercorridos]) :-
+    member(de(EstadoAtual, Simbolo, ProximoEstado), Transicoes), % Encontra a transição válida
+    simular_transicoes(Transicoes, ProximoEstado, Restante, EstadoFinal, EstadosPercorridos). % Continua a simulação
+
+% Salva os resultados dos testes em um arquivo JSON
+salvar_resultados(Arquivo, Resultados) :-
+    NomePasta = 'pastaResultados/', % Define o nome da pasta para salvar os resultados
+    (   exists_directory(NomePasta) -> % Verifica se a pasta existe
+        true
+    ;   make_directory(NomePasta), % Cria a pasta se ela não existir
+        writeln('Pasta "pastaResultados" criada.')
+    ),
+    atom_concat(NomePasta, Arquivo, CaminhoAtom), % Concatena o nome da pasta com o nome do arquivo
+    atom_string(CaminhoAtom, CaminhoCompleto), % Converte o caminho para string
+    maplist(converter_resultado_para_json, Resultados, ResultadosJSON), % Converte os resultados para JSON
+    open(CaminhoCompleto, write, Stream), % Abre o arquivo para escrita
+    json_write_dict(Stream, json{resultados: ResultadosJSON}, [pretty(true)]), % Escreve os resultados no arquivo
+    close(Stream), % Fecha o arquivo
+    format("Resultados salvos em ~w~n", [CaminhoCompleto]). % Exibe o caminho do arquivo salvo
+
+% Converte um resultado de teste para o formato JSON
+converter_resultado_para_json(resultado_teste{palavra: Palavra, aceita: Aceita, estados_percorridos: Estados}, 
+                               json{palavra: Palavra, aceita: Aceita, estados_percorridos: Estados}). % Mapeia os campos para JSON
