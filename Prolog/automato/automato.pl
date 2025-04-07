@@ -1,27 +1,27 @@
 :- module(automato, [
     criar_automato/2, % Cria um autômato a partir de um arquivo JSON
-    imprimir_automato/1, % Imprime as informações do autômato
-    teste_palavra/3, % Testa uma palavra no autômato
-    salvar_resultados/2 % Salva os resultados dos testes em um arquivo JSON
+    imprimir_automato/1, % Exibe as informações do autômato
+    teste_palavra/3, % Verifica se uma palavra é aceita pelo autômato
+    salvar_resultados/2 % Exporta resultados de testes para um arquivo JSON
 ]).
 
-:- use_module(library(http/json)). % Importa a biblioteca JSON para manipulação de arquivos JSON
-:- use_module(library(http/json_convert)). % Importa a biblioteca para conversão entre Prolog e JSON
+:- use_module(library(http/json)). % Biblioteca para leitura e escrita de JSON
+:- use_module(library(http/json_convert)). % Biblioteca para conversão Prolog-JSON
 
 % Cria um autômato a partir de um arquivo JSON
 criar_automato(Arquivo, Automato) :-
-    ler_json(Arquivo, Json), % Lê o arquivo JSON
+    ler_json(Arquivo, Json), % Carrega o conteúdo do arquivo JSON
     Json = json([alfabeto=Alfabeto, estadoInicial=EstadoInicial, estadosFinais=EstadosFinais, transicoes=TransicoesJSON]),
-    extrair_transicoes(TransicoesJSON, Transicoes), % Extrai as transições do JSON
-    Automato = automato(Alfabeto, EstadoInicial, EstadosFinais, Transicoes). % Cria o autômato
+    extrair_transicoes(TransicoesJSON, Transicoes), % Converte transições do JSON para lista
+    Automato = automato(Alfabeto, EstadoInicial, EstadosFinais, Transicoes). % Define a estrutura do autômato
 
-% Lê um arquivo JSON e converte seu conteúdo para uma estrutura Prolog
+% Carrega um arquivo JSON e o converte em estrutura Prolog
 ler_json(Arquivo, Json) :-
-    open(Arquivo, read, Stream), % Abre o arquivo para leitura
-    json_read(Stream, Json), % Lê o conteúdo JSON do arquivo
-    close(Stream). % Fecha o arquivo
+    open(Arquivo, read, Stream), % Abre o arquivo em modo leitura
+    json_read(Stream, Json), % Converte o conteúdo JSON em Prolog
+    close(Stream). % Fecha o fluxo de leitura
 
-% Extrai as transições do JSON para uma lista de tuplas (de/para)
+% Transforma as transições do formato JSON em uma lista de tuplas
 extrair_transicoes(json(TransicoesJSON), Transicoes) :-
     findall(de(EstadoOrigem, Simbolo, EstadoDestino),
             ( member(EstadoOrigem=json(Simbolos), TransicoesJSON),
@@ -29,56 +29,56 @@ extrair_transicoes(json(TransicoesJSON), Transicoes) :-
             ),
             Transicoes).
 
-% Imprime as informações do autômato
+% Exibe as informações do autômato no console
 imprimir_automato(automato(Alfabeto, EstadoInicial, EstadosFinais, Transicoes)) :-
-    format("=== Informacoes do Automato ===~n", []), % Título da seção
-    format("Alfabeto: ~w~n", [Alfabeto]), % Exibe o alfabeto
-    format("Estado Inicial: ~w~n", [EstadoInicial]), % Exibe o estado inicial
-    format("Estado(s) Final(is): ~w~n", [EstadosFinais]), % Exibe os estados finais
-    format("Transicoes:~n"), % Título para as transições
-    maplist(imprimir_transicao, Transicoes). % Imprime cada transição
+    format("=== Informacoes do Automato ===~n", []), % Cabeçalho da exibição
+    format("Alfabeto: ~w~n", [Alfabeto]), % Lista os símbolos do alfabeto
+    format("Estado Inicial: ~w~n", [EstadoInicial]), % Mostra o estado inicial
+    format("Estado(s) Final(is): ~w~n", [EstadosFinais]), % Lista os estados finais
+    format("Transicoes:~n"), % Cabeçalho das transições
+    maplist(imprimir_transicao, Transicoes). % Exibe cada transição
 
-% Imprime uma transição no formato "EstadoOrigem --(Simbolo)--> EstadoDestino"
+% Formata e exibe uma transição no console
 imprimir_transicao(de(EstadoOrigem, Simbolo, EstadoDestino)) :-
-    format("  ~w --(~w)--> ~w~n", [EstadoOrigem, Simbolo, EstadoDestino]). % Formata e exibe a transição
+    format("  ~w --(~w)--> ~w~n", [EstadoOrigem, Simbolo, EstadoDestino]). % Mostra transição no formato origem-símbolo-destino
 
-% Testa uma palavra no autômato
+% Verifica se uma palavra é aceita pelo autômato
 teste_palavra(automato(Alfabeto, EstadoInicial, EstadosFinais, Transicoes), Palavra, Resultado) :-
-    string_chars(Palavra, Simbolos), % Converte a palavra para uma lista de símbolos
-    (   forall(member(Simbolo, Simbolos), member(Simbolo, Alfabeto)) -> % Verifica se todos os símbolos estão no alfabeto
-        simular_transicoes(Transicoes, EstadoInicial, Simbolos, EstadoFinal, EstadosPercorridos), % Simula as transições
-        (   member(EstadoFinal, EstadosFinais) -> % Verifica se o estado final é um estado de aceitação
+    string_chars(Palavra, Simbolos), % Divide a palavra em lista de símbolos
+    (   forall(member(Simbolo, Simbolos), member(Simbolo, Alfabeto)) -> % Confere se os símbolos pertencem ao alfabeto
+        simular_transicoes(Transicoes, EstadoInicial, Simbolos, EstadoFinal, EstadosPercorridos), % Executa a simulação
+        (   member(EstadoFinal, EstadosFinais) -> % Verifica se o estado final é de aceitação
             Aceita = true
         ;   Aceita = false
         )
-    ;   _EstadoFinal = "Fora do alfabeto", % Caso a palavra contenha símbolos inválidos
+    ;   _EstadoFinal = "Fora do alfabeto", % Define mensagem para símbolos inválidos
         EstadosPercorridos = ["Fora do alfabeto"],
         Aceita = false
     ),
-    Resultado = resultado_teste{palavra: Palavra, aceita: Aceita, estados_percorridos: EstadosPercorridos}. % Cria o resultado
+    Resultado = resultado_teste{palavra: Palavra, aceita: Aceita, estados_percorridos: EstadosPercorridos}. % Estrutura o resultado
 
-% Simula as transições do autômato para uma dada palavra
-simular_transicoes(_, EstadoAtual, [], EstadoAtual, [EstadoAtual]). % Caso base: fim da palavra
+% Simula o processamento da palavra no autômato
+simular_transicoes(_, EstadoAtual, [], EstadoAtual, [EstadoAtual]). % Caso base: retorna o estado atual ao fim da palavra
 simular_transicoes(Transicoes, EstadoAtual, [Simbolo|Restante], EstadoFinal, [EstadoAtual|EstadosPercorridos]) :-
-    member(de(EstadoAtual, Simbolo, ProximoEstado), Transicoes), % Encontra a transição válida
-    simular_transicoes(Transicoes, ProximoEstado, Restante, EstadoFinal, EstadosPercorridos). % Continua a simulação
+    member(de(EstadoAtual, Simbolo, ProximoEstado), Transicoes), % Busca transição válida
+    simular_transicoes(Transicoes, ProximoEstado, Restante, EstadoFinal, EstadosPercorridos). % Processa o restante da palavra
 
 % Salva os resultados dos testes em um arquivo JSON
 salvar_resultados(Arquivo, Resultados) :-
-    NomePasta = 'pastaResultados/', % Define o nome da pasta para salvar os resultados
-    (   exists_directory(NomePasta) -> % Verifica se a pasta existe
+    NomePasta = 'pastaResultados/', % Define o diretório de saída
+    (   exists_directory(NomePasta) -> % Verifica existência do diretório
         true
-    ;   make_directory(NomePasta), % Cria a pasta se ela não existir
+    ;   make_directory(NomePasta), % Cria o diretório se necessário
         writeln('Pasta "pastaResultados" criada.')
     ),
-    atom_concat(NomePasta, Arquivo, CaminhoAtom), % Concatena o nome da pasta com o nome do arquivo
+    atom_concat(NomePasta, Arquivo, CaminhoAtom), % Gera o caminho completo do arquivo
     atom_string(CaminhoAtom, CaminhoCompleto), % Converte o caminho para string
-    maplist(converter_resultado_para_json, Resultados, ResultadosJSON), % Converte os resultados para JSON
-    open(CaminhoCompleto, write, Stream), % Abre o arquivo para escrita
-    json_write_dict(Stream, json{resultados: ResultadosJSON}, [pretty(true)]), % Escreve os resultados no arquivo
-    close(Stream), % Fecha o arquivo
-    format("Resultados salvos em ~w~n", [CaminhoCompleto]). % Exibe o caminho do arquivo salvo
+    maplist(converter_resultado_para_json, Resultados, ResultadosJSON), % Converte resultados para formato JSON
+    open(CaminhoCompleto, write, Stream), % Abre o arquivo em modo escrita
+    json_write_dict(Stream, json{resultados: ResultadosJSON}, [pretty(true)]), % Grava os resultados no arquivo
+    close(Stream), % Fecha o fluxo de escrita
+    format("Resultados salvos em ~w~n", [CaminhoCompleto]). % Confirma a gravação
 
 % Converte um resultado de teste para o formato JSON
 converter_resultado_para_json(resultado_teste{palavra: Palavra, aceita: Aceita, estados_percorridos: Estados}, 
-                               json{palavra: Palavra, aceita: Aceita, estados_percorridos: Estados}). % Mapeia os campos para JSON
+                               json{palavra: Palavra, aceita: Aceita, estados_percorridos: Estados}). % Mapeia campos do resultado para JSON
