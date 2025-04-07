@@ -1,6 +1,6 @@
-# **Simulador de Autômatos**
+# **Automato Playground**
 
-O projeto `Simulador de Autômatos` é uma implementação em Prolog para manipular e simular autômatos finitos determinísticos (AFD). Ele inclui o módulo `automato` para operações com AFDs e um programa principal (`main`) que oferece uma interface interativa via console. O simulador permite carregar autômatos de arquivos JSON, testar palavras, visualizar informações e salvar resultados em JSON.
+O projeto `Automato Playground` é uma implementação em Prolog para manipular e simular autômatos finitos determinísticos (AFD). Ele inclui o módulo `automato` para operações com AFDs e um programa principal (`main`) que oferece uma interface interativa via console. O simulador permite carregar autômatos de arquivos JSON, testar palavras, visualizar informações e salvar resultados em JSON.
 
 ## **Índice**
 1. [Descrição](#descrição)
