@@ -1,0 +1,64 @@
+{
+  "resultados": [
+    {
+      "aceita":true,
+      "estados_percorridos": ["q0", "q1", "q2" ],
+      "palavra":"00"
+    },
+    {
+      "aceita":false,
+      "estados_percorridos": ["q0", "q1", "q0" ],
+      "palavra":"01"
+    },
+    {
+      "aceita":false,
+      "estados_percorridos": ["q0", "q0", "q1" ],
+      "palavra":"10"
+    },
+    {
+      "aceita":false,
+      "estados_percorridos": ["q0", "q0", "q0" ],
+      "palavra":"11"
+    },
+    {
+      "aceita":true,
+      "estados_percorridos": ["q0", "q0", "q1", "q2" ],
+      "palavra":"100"
+    },
+    {
+      "aceita":false,
+      "estados_percorridos": ["q0", "q0", "q1", "q0" ],
+      "palavra":"101"
+    },
+    {
+      "aceita":false,
+      "estados_percorridos": ["q0", "q0", "q0", "q1" ],
+      "palavra":"110"
+    },
+    {
+      "aceita":false,
+      "estados_percorridos": ["q0", "q0", "q0", "q0" ],
+      "palavra":"111"
+    },
+    {
+      "aceita":true,
+      "estados_percorridos": ["q0", "q1", "q2", "q2" ],
+      "palavra":"000"
+    },
+    {
+      "aceita":false,
+      "estados_percorridos": ["q0", "q1", "q2", "q0" ],
+      "palavra":"001"
+    },
+    {
+      "aceita":false,
+      "estados_percorridos": ["q0", "q1", "q0", "q1" ],
+      "palavra":"010"
+    },
+    {
+      "aceita":false,
+      "estados_percorridos": ["q0", "q1", "q0", "q0" ],
+      "palavra":"011"
+    }
+  ]
+}
