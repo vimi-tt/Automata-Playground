@@ -26,32 +26,29 @@ main_loop(Automato) :-
     continuar_ou_sair(NovoAutomato, Opcao). % Decide se continua no loop ou sai do programa
 
 % Processa a opção escolhida pelo usuário
-processar_opcao("1", _, Automato) :- % Carrega o autômato de um arquivo JSON
+processar_opcao("1", _, Automato) :-
     carregar_json(Automato).
-processar_opcao("2", none, _) :- % Verifica se há um autômato carregado antes de visualizar informações
-    writeln('Nenhum automato carregado Por favor carregue o automato primeiro'),
-    fail.
-processar_opcao("2", Automato, Automato) :- % Visualiza informações do autômato carregado
+processar_opcao("2", none, none) :- % Mantém o mesmo Automato (none) e apenas exibe mensagem
+    writeln('Nenhum automato carregado. Por favor carregue o automato primeiro').
+processar_opcao("2", Automato, Automato) :-
     visualizar_info(Automato).
-processar_opcao("3", none, _) :- % Verifica se há um autômato carregado antes de testar palavras
-    writeln('Nenhum automato carregado Por favor carregue o automato primeiro'),
-    fail.
-processar_opcao("3", Automato, Automato) :- % Testa palavras no autômato carregado
+processar_opcao("3", none, none) :- % Mantém o mesmo Automato (none) e apenas exibe mensagem
+    writeln('Nenhum automato carregado. Por favor carregue o automato primeiro').
+processar_opcao("3", Automato, Automato) :-
     testar_palavras(Automato).
-processar_opcao("4", none, _) :- % Verifica se há um autômato carregado antes de salvar resultados
-    writeln('Nenhum automato carregado Por favor carregue o automato primeiro'),
-    fail.
-processar_opcao("4", Automato, Automato) :- % Salva os resultados dos testes em um arquivo JSON
+processar_opcao("4", none, none) :- % Mantém o mesmo Automato (none) e apenas exibe mensagem
+    writeln('Nenhum automato carregado. Por favor carregue o automato primeiro').
+processar_opcao("4", Automato, Automato) :-
     salvar_testes(Automato).
-processar_opcao("5", _, _) :- % Sai do programa
+processar_opcao("5", _, _) :-
     writeln('Saindo'),
     !.
-processar_opcao(_, _, _) :- % Caso a opção seja inválida, exibe uma mensagem de erro
-    writeln('Opcao invalida Tente novamente').
+processar_opcao(_, Automato, Automato) :- % Opção inválida, mantém o Automato atual
+    writeln('Opcao invalida. Tente novamente').
 
 % Decide se continua no loop ou sai do programa
 continuar_ou_sair(_, "5") :- !. % Se a opção for "5", sai do programa
-continuar_ou_sair(Automato, _) :- % Caso contrário, continua no loop principal
+continuar_ou_sair(Automato, _) :-
     main_loop(Automato).
 
 % Carrega o autômato de um arquivo JSON
