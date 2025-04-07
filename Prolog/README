@@ -134,6 +134,16 @@ No interpretador Prolog:
 === Simulador de Autômatos ===
 Bem-vindo ao simulador de autômatos!
 
+   === Menu ===
+   1 Carregar automato arquivo padrao
+   2 Visualizar informacoes do automato
+   3 Testar palavra(s)
+   4 Salvar resultados dos testes em JSON
+   5 Sair
+   Escolha uma opcao: 1
+   Automato carregado com sucesso
+   ```
+
 === Menu ===
 1. Carregar autômato (arquivo padrão)
 2. Visualizar informações do autômato

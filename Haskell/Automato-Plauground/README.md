@@ -1,7 +1,3 @@
-Aqui está uma versão aprimorada do README original fornecido como exemplo, adaptada para refletir o código Haskell do módulo `Automato` e o `main` que você forneceu. Melhorei a clareza, organização, detalhamento e adicionei seções úteis para torná-lo mais completo e profissional.
-
----
-
 # **Simulador de Autômatos**
 
 O projeto `Simulador de Autômatos` é uma implementação em Haskell para manipulação e simulação de autômatos finitos determinísticos (AFD). Ele combina o módulo `Automato`, que fornece funcionalidades essenciais para criar, testar e gerenciar AFDs, com um programa principal (`Main`) que oferece uma interface interativa via console. O simulador suporta leitura de arquivos JSON, testes de palavras e exportação de resultados, sendo ideal para estudos ou experimentos com autômatos.
