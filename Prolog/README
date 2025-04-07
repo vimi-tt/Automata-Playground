@@ -1,60 +1,63 @@
-# **Simulador de Autômatos**
+# **Automato Playground**
 
-O projeto `Simulador de Autômatos` é uma implementação em Prolog para manipular e simular autômatos finitos determinísticos (AFD). Ele inclui o módulo `automato` para operações com AFDs e um programa principal (`main`) que oferece uma interface interativa via console. O simulador permite carregar autômatos de arquivos JSON, testar palavras, visualizar informações e salvar resultados em JSON.
+**Automato Playground** é uma aplicação em Prolog para simulação e manipulação de Autômatos Finitos Determinísticos (AFDs). O projeto inclui um módulo (`automato`) com operações essenciais sobre AFDs e um programa principal (`main`) que fornece uma interface interativa via console. É possível carregar autômatos a partir de arquivos JSON, testar palavras, visualizar detalhes e salvar os resultados em JSON.
+
+---
 
 ## **Índice**
-1. [Descrição](#descrição)
-2. [Funcionalidades](#funcionalidades)
-3. [Estrutura do Projeto](#estrutura-do-projeto)
-4. [Dependências](#dependências)
-5. [Como Usar](#como-usar)
+
+1. [Descrição](#descrição)  
+2. [Funcionalidades](#funcionalidades)  
+3. [Estrutura do Projeto](#estrutura-do-projeto)  
+4. [Dependências](#dependências)  
+5. [Como Usar](#como-usar)  
 
 ---
 
 ## **Descrição**
 
-Este projeto implementa um simulador interativo para autômatos finitos determinísticos (AFD) em Prolog. O módulo `automato` fornece as operações fundamentais (criação, teste e salvamento de resultados), enquanto o programa principal (`main`) oferece um menu interativo para o usuário manipular o autômato. Os dados do autômato são lidos de arquivos JSON, e os resultados dos testes podem ser exportados no mesmo formato.
+O projeto implementa um simulador interativo para AFDs usando Prolog. A lógica principal reside no módulo `automato`, que permite a criação e manipulação de autômatos, enquanto o programa `main` apresenta uma interface de linha de comando simples e intuitiva. A entrada e saída de dados ocorrem em formato JSON para facilitar a integração e visualização dos resultados.
 
 ---
 
 ## **Funcionalidades**
 
-### **1. Carregar Autômato**
-- Carrega um autômato a partir de um arquivo JSON (`automato.json` por padrão).
-- Componentes carregados:
-  - Alfabeto
-  - Estado inicial
-  - Estados finais
-  - Transições
+### 1. **Carregar Autômato**
+- Carrega um autômato a partir de um arquivo JSON (`automato.json`, por padrão).
+- Componentes:
+  - Alfabeto  
+  - Estado inicial  
+  - Estados finais  
+  - Transições  
 
-### **2. Testar Palavras**
-- Permite testar palavras individualmente ou em lote (via arquivo `palavras.txt`).
+### 2. **Testar Palavras**
+- Testa palavras individualmente ou em lote (via `palavras.txt`).
 - Exibe:
-  - Palavra testada
-  - Status de aceitação (`true` ou `false`)
-  - Estados percorridos
+  - Palavra testada  
+  - Aceitação (`true` ou `false`)  
+  - Caminho percorrido nos estados  
 
-### **3. Visualizar Informações**
-- Exibe no console as informações do autômato carregado:
-  - Alfabeto
-  - Estado inicial
-  - Estados finais
-  - Transições
+### 3. **Visualizar Informações**
+- Mostra os componentes do autômato:
+  - Alfabeto  
+  - Estado inicial  
+  - Estados finais  
+  - Transições  
 
-### **4. Salvar Resultados**
-- Salva os resultados dos testes em um arquivo JSON especificado pelo usuário.
-- Resultados incluem:
-  - Palavra testada
-  - Status de aceitação
-  - Estados percorridos
+### 4. **Salvar Resultados**
+- Exporta os resultados dos testes para um arquivo JSON.
+- Informações salvas:
+  - Palavra testada  
+  - Resultado da aceitação  
+  - Sequência de estados visitados  
 
-### **5. Interface Interativa**
-- Menu principal com opções para:
-  - Carregar autômato
-  - Visualizar informações
-  - Testar palavras
-  - Salvar resultados
-  - Sair
+### 5. **Interface Interativa**
+- Menu de opções:
+  - Carregar autômato  
+  - Visualizar informações  
+  - Testar palavras  
+  - Salvar resultados  
+  - Sair  
 
 ---
 
@@ -62,87 +65,80 @@ Este projeto implementa um simulador interativo para autômatos finitos determin
 
 O projeto é composto por dois arquivos principais:
 
-### **1. Módulo `automato`**
-- Contém as operações básicas para manipular AFDs.
-- **Predicados principais**:
-  - `criar_automato/2`: Cria um autômato a partir de um arquivo JSON.
-    - **Exemplo**: `criar_automato("automato.json", Automato).`
-  - `imprimir_automato/1`: Exibe as informações do autômato.
-    - **Exemplo**: `imprimir_automato(Automato).`
-  - `teste_palavra/3`: Testa uma palavra no autômato.
-    - **Exemplo**: `teste_palavra(Automato, "ab", Resultado).`
-  - `salvar_resultados/2`: Salva os resultados em um arquivo JSON.
-    - **Exemplo**: `salvar_resultados("resultados.json", Resultados).`
-- **Estrutura do Autômato**:
-  - `automato(Alfabeto, EstadoInicial, EstadosFinais, Transicoes)`:
-    - `Alfabeto`: Lista de símbolos.
-    - `EstadoInicial`: Átomo.
-    - `EstadosFinais`: Lista de átomos.
-    - `Transicoes`: Lista de `de(Origem, Simbolo, Destino)`.
+### 1. **Módulo `automato`**
+Contém as funcionalidades para criação, visualização e teste de autômatos.
 
-- **Estrutura do Resultado**:
-  - `resultado_teste{palavra: Palavra, aceita: Aceita, estados_percorridos: Estados}`:
-    - `palavra`: String.
-    - `aceita`: `true` ou `false`.
-    - `estados_percorridos`: Lista de estados.
-
-### **2. Programa Principal (`main`)** 
-- Implementa uma interface interativa para o usuário.
 - **Predicados principais**:
-  - `main/0`: Inicia o simulador.
-    - **Exemplo**: `?- main.`
-  - `main_loop/1`: Controla o menu interativo.
-  - `carregar_json/1`: Carrega o autômato do arquivo padrão.
-  - `testar_palavras/1`: Permite testar palavras individualmente ou em lote.
-  - `salvar_testes/1`: Salva os resultados dos testes de um arquivo de palavras.
-- **Arquivos Padrão**:
-  - `automato.json`: Arquivo JSON com o autômato.
-  - `palavras.txt`: Arquivo TXT com palavras a testar (uma por linha).
+  - `criar_automato/2`: Lê um JSON e cria um AFD.  
+    Exemplo: `criar_automato("automato.json", Automato).`
+  - `imprimir_automato/1`: Exibe informações do AFD.  
+    Exemplo: `imprimir_automato(Automato).`
+  - `teste_palavra/3`: Testa se uma palavra é aceita pelo autômato.  
+    Exemplo: `teste_palavra(Automato, "ab", Resultado).`
+  - `salvar_resultados/2`: Salva os resultados em um JSON.  
+    Exemplo: `salvar_resultados("resultados.json", Resultados).`
+
+- **Representações**:
+  - `automato(Alfabeto, EstadoInicial, EstadosFinais, Transicoes)`  
+  - Transições: `de(Origem, Simbolo, Destino)`
+  - Resultado do teste:
+    ```prolog
+    resultado_teste{
+      palavra: "abc",
+      aceita: true,
+      estados_percorridos: [q0, q1, q2]
+    }
+    ```
+
+### 2. **Programa Principal (`main`)**
+Fornece a interface interativa do sistema.
+
+- **Predicados principais**:
+  - `main/0`: Inicia o simulador.  
+  - `main_loop/1`: Gerencia o menu interativo.  
+  - `carregar_json/1`: Lê o arquivo `automato.json`.  
+  - `testar_palavras/1`: Testa palavras manualmente ou via arquivo.  
+  - `salvar_testes/1`: Salva os resultados em JSON.
+
+- **Arquivos esperados**:
+  - `automato.json`: Definição do autômato.  
+  - `palavras.txt`: Palavras para teste (uma por linha).  
 
 ---
 
 ## **Dependências**
 
-O projeto depende das seguintes bibliotecas do Prolog:
-- `library(http/json)`: Para leitura e escrita de arquivos JSON.
-- `library(http/json_convert)`: Para conversão entre Prolog e JSON.
+Este projeto utiliza bibliotecas padrão do Prolog:
+
+- `library(http/json)` – Leitura e escrita de arquivos JSON  
+- `library(http/json_convert)` – Conversão entre termos Prolog e JSON  
 
 ---
 
 ## **Como Usar**
 
-1. **Preparação**:
-   - Certifique-se de ter um arquivo `automato.json` com a estrutura do autômato (alfabeto, estado inicial, estados finais e transições).
-   - Opcionalmente, crie um arquivo `palavras.txt` com uma palavra por linha para testes em lote.
+### 1. **Preparação**
+- Crie um arquivo `automato.json` contendo a definição do AFD.  
+- (Opcional) Crie um `palavras.txt` com as palavras a serem testadas.
 
-2. **Execução**:
-   - Carregue o programa no interpretador Prolog:
-     ```prolog
-     ?- [main].
-     ```
-   - Inicie o simulador:
-     ```prolog
-     ?- main.
-     ```
+### 2. **Executar o Programa**
+No interpretador Prolog:
 
-3. **Menu de Opções**:
-   - `1`: Carrega o autômato de `automato.json`.
-   - `2`: Exibe as informações do autômato carregado.
-   - `3`: Testa palavras (individual ou via `palavras.txt`).
-   - `4`: Salva os resultados dos testes em um arquivo JSON.
-   - `5`: Encerra o programa.
+```prolog
+?- [main].
+?- main.
+```
 
-4. **Exemplo de Interação**:
-   ```prolog
-   === Simulador de Automatos ===
-   Bem vindo ao simulador de automatos
+### 3. **Menu Interativo**
+```
+=== Simulador de Autômatos ===
+Bem-vindo ao simulador de autômatos!
 
-   === Menu ===
-   1 Carregar automato arquivo padrao
-   2 Visualizar informacoes do automato
-   3 Testar palavra(s)
-   4 Salvar resultados dos testes em JSON
-   5 Sair
-   Escolha uma opcao: 1
-   Automato carregado com sucesso
-   ```
+=== Menu ===
+1. Carregar autômato (arquivo padrão)
+2. Visualizar informações do autômato
+3. Testar palavra(s)
+4. Salvar resultados dos testes em JSON
+5. Sair
+Escolha uma opção: 
+```
