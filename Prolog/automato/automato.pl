@@ -8,12 +8,6 @@
 :- use_module(library(http/json)). % Biblioteca para leitura e escrita de JSON
 :- use_module(library(http/json_convert)). % Biblioteca para conversão Prolog-JSON
 
-% Cria um autômato a partir de um arquivo JSON
-criar_automato(Arquivo, Automato) :-
-    ler_json(Arquivo, Json), % Carrega o conteúdo do arquivo JSON
-    Json = json([alfabeto=Alfabeto, estadoInicial=EstadoInicial, estadosFinais=EstadosFinais, transicoes=TransicoesJSON]),
-    extrair_transicoes(TransicoesJSON, Transicoes), % Converte transições do JSON para lista
-    Automato = automato(Alfabeto, EstadoInicial, EstadosFinais, Transicoes). % Define a estrutura do autômato
 
 % Carrega um arquivo JSON e o converte em estrutura Prolog
 ler_json(Arquivo, Json) :-
@@ -28,6 +22,13 @@ extrair_transicoes(json(TransicoesJSON), Transicoes) :-
               member(Simbolo=EstadoDestino, Simbolos)
             ),
             Transicoes).
+
+% Cria um autômato a partir de um arquivo JSON
+criar_automato(Arquivo, Automato) :-
+    ler_json(Arquivo, Json), % Carrega o conteúdo do arquivo JSON
+    Json = json([alfabeto=Alfabeto, estadoInicial=EstadoInicial, estadosFinais=EstadosFinais, transicoes=TransicoesJSON]),
+    extrair_transicoes(TransicoesJSON, Transicoes), % Converte transições do JSON para lista
+    Automato = automato(Alfabeto, EstadoInicial, EstadosFinais, Transicoes). % Define a estrutura do autômato
 
 % Exibe as informações do autômato no console
 imprimir_automato(automato(Alfabeto, EstadoInicial, EstadosFinais, Transicoes)) :-
