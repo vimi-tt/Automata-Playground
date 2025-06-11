@@ -1,7 +1,5 @@
 # Automata-Playground
 
-Este projeto é um simulador de Autômatos Finitos Determinísticos (AFD) para a cadeira de Paradigmas de Linguagem de Programação (PLP) da UFCG.
-
 O objetivo do simulador é permitir que o usuário defina um AFD, insira sequências de entrada e veja se elas são aceitas ou rejeitadas pelo autômato. O simulador também exibe o caminho percorrido pelo autômato durante a simulação. O projeto possui duas versões em linguagens distintas: Haskell e Prolog.
 
 ## Funcionalidades
